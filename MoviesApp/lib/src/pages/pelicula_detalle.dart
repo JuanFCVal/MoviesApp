@@ -1,10 +1,12 @@
+import 'package:MoviesApp/src/models/actors.dart';
 import 'package:MoviesApp/src/models/movies.dart';
+import 'package:MoviesApp/src/providers/movies_provider.dart';
 import 'package:flutter/material.dart';
 
 class PeliculaDetalle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Movie pelicula = ModalRoute.of(context).settings.arguments;
+    final Movie pelicula = ModalRoute.of(context)!.settings.arguments as Movie;
 
     return Scaffold(
         body: CustomScrollView(
@@ -19,7 +21,8 @@ class PeliculaDetalle extends StatelessWidget {
           _descripcion(pelicula),
           _descripcion(pelicula),
           _descripcion(pelicula),
-          _descripcion(pelicula)
+          _descripcion(pelicula),
+          _crearCasting(pelicula),
         ]))
       ],
     ));
@@ -93,6 +96,34 @@ class PeliculaDetalle extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: 20, left: 20, right: 20),
       child: Text(pelicula.overview, textAlign: TextAlign.justify),
+    );
+  }
+
+  _crearCasting(Movie pelicula) {
+    final peliprovider = new MoviesProvider();
+    /*FutureBuilder(
+      future: peliprovider.getCast(pelicula.id.toString()),
+      builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+        if (snapshot.hasData) {
+          return _crearActores(snapshot.data);
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );*/
+  }
+
+  Widget _crearActores(List<Actor> actores) {
+    return SizedBox(
+      height: 200,
+      child: PageView.builder(
+          controller: PageController(viewportFraction: 0.3, initialPage: 1),
+          itemCount: actores.length,
+          itemBuilder: (context, i) {
+            return Text("hola");
+          }),
     );
   }
 }

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 
 class MovieHorizontal extends StatelessWidget {
   final List<Movie> movies;
-  final Function siguientePagina;
-  MovieHorizontal({@required this.movies, @required this.siguientePagina});
+
+  //final Function siguientePagina;
+
+  MovieHorizontal({required this.movies});
   final _pageController =
       new PageController(initialPage: 1, viewportFraction: 0.3);
   @override
@@ -14,9 +16,17 @@ class MovieHorizontal extends StatelessWidget {
     _pageController.addListener(() {
       if (_pageController.position.pixels >=
           _pageController.position.maxScrollExtent - 200) {
-        siguientePagina();
+        // siguientePagina();
       }
     });
+    if (this.movies.length == 0) {
+      return Container(
+        width: _screenSize.width * 0.65,
+        height: _screenSize.height * 0.5,
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Container(
       height: _screenSize.height * 0.30,
       child: PageView.builder(
@@ -40,15 +50,16 @@ class MovieHorizontal extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
             child: FadeInImage(
                 placeholder: AssetImage('assets/loading.gif'),
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
                 height: 160,
-                image: NetworkImage(pelicula.getPoster())),
+                image: NetworkImage(pelicula.getBackground())),
           ),
           SizedBox(
             height: 5,
           ),
           Text(
             pelicula.title,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.caption,
           )

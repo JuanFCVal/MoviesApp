@@ -1,5 +1,5 @@
 class Movies {
-  List<Movie> items = new List();
+  List<Movie> items = [];
   Movies();
   Movies.fromJsonList(List<dynamic> jsonList) {
     if (jsonList == null) return;
@@ -11,20 +11,20 @@ class Movies {
 }
 
 class Movie {
-  bool adult;
-  String backdropPath;
-  List<int> genreIds;
-  int id;
-  String originalLanguage;
-  String originalTitle;
-  String overview;
-  double popularity;
-  String posterPath;
-  String releaseDate;
-  String title;
-  bool video;
-  double voteAverage;
-  int voteCount;
+  bool? adult;
+  String? backdropPath;
+  List<int>? genreIds;
+  int? id;
+  String? originalLanguage;
+  String originalTitle = "";
+  String overview = "";
+  double? popularity;
+  String? posterPath;
+  String? releaseDate;
+  String title = "";
+  bool? video;
+  double? voteAverage;
+  int? voteCount;
 
   Movie({
     this.adult,
@@ -32,12 +32,12 @@ class Movie {
     this.genreIds,
     this.id,
     this.originalLanguage,
-    this.originalTitle,
-    this.overview,
+    required this.originalTitle,
+    required this.overview,
     this.popularity,
     this.posterPath,
     this.releaseDate,
-    this.title,
+    required this.title,
     this.video,
     this.voteAverage,
     this.voteCount,
@@ -61,10 +61,10 @@ class Movie {
   }
 
   getPoster() {
-    if (posterPath == null) {
-      return "https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg";
-    } else {
+    if (posterPath != null) {
       return 'https://image.tmdb.org/t/p/w500/$posterPath';
+    } else {
+      return "https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg";
     }
   }
 

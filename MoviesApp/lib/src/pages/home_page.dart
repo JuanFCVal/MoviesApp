@@ -2,13 +2,15 @@ import 'package:MoviesApp/src/Widgets/CardSwipper.dart';
 import 'package:MoviesApp/src/Widgets/movie_horizontal.dart';
 import 'package:MoviesApp/src/providers/movies_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   final MoviesProvider moviesProvider = new MoviesProvider();
 
   @override
   Widget build(BuildContext context) {
-    moviesProvider.getPopular();
+    final moviesnewProvider = Provider.of<MoviesProvider>(context);
+    print(moviesnewProvider.onDisplayMovies);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -21,7 +23,8 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _swiperTarjetas(),
+              //_swiperTarjetas(), //Utilizamos este metodo para construir mediante un future builder haciendo la consulta directamente en la clase.
+              CardSwipper(peliculas: moviesnewProvider.onDisplayMovies),
               _footer(context),
             ],
           ),
@@ -30,6 +33,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
+// Future Builder que construye la clase utilizando el provider de la clase no el global
   Widget _swiperTarjetas() {
     return FutureBuilder(
         future: moviesProvider.getEnCines(),
@@ -60,7 +64,9 @@ class HomePage extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          StreamBuilder(
+          MovieHorizontal(movies: moviesProvider.popularMovies),
+          // MovieHorizontal(movies: moviesProvider.popularMovies, siguientePagina: moviesProvider.getPopularMovies())
+          /*StreamBuilder(
             stream: moviesProvider.popularesStream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -72,7 +78,7 @@ class HomePage extends StatelessWidget {
                 return Center(child: CircularProgressIndicator());
               }
             },
-          ),
+          ),*/
         ],
       ),
     );
